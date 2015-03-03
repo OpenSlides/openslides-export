@@ -1,0 +1,12 @@
+/*
+ *  Style for openslides-csv-export
+ */
+
+.icon-export {
+    background-image: url("../img/glyphicons_359_file_export.png");
+    background-position: 0;
+}
+.leftmenu ul li.active a span.ico i.icon-export {
+    background-image: url("../img/glyphicons_359_file_export_white.png");
+}
+

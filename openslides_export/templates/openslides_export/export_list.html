@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load tags %}
+
+{% block title%}
+    {% trans 'Export' %} – {{ block.super }}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+    $(function() {
+        $("#motionSelect").change(function() {
+            var motion_id = $('#motionSelect').val();
+            var motion_export_format = $('#motionExportFormat').val();
+            var motion_export_url = "/export/motion/" + motion_id + "/" + motion_export_format;
+            $('#motionExportButton').attr("href", motion_export_url);
+        });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans 'Export' %}</h1>
+
+    <fieldset>
+        <legend>{% trans 'Motions' %}</legend>
+        <label>{% trans 'Motion' %}:</label>
+        <select id="motionSelect">
+            <option value="all" selected>{% trans 'All motions' %}</option>
+            {% for motion in motions %}
+                <option value="{{ motion.id }}">{{ motion }}</option>
+            {% endfor %}
+        </select>
+        <label>{% trans 'Export format' %}:</label>
+        <select id="motionExportFormat">
+            <option value="odt">ODT</option>
+        </select>
+        <div class="control-group ">
+          <a href="{% url 'export_motion' 'all' 'odt' %}" id="motionExportButton" class="btn">{% trans 'Export' %}</a>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>{% trans 'Agenda' %}</legend>
+        <label>{% trans 'Agenda' %}:</label>
+        <select id="agendaSelect">
+            {#<option value="agenda" selected>{% trans 'Full agenda' %}</option>#}
+            <option value="speakers">{% trans 'Lists of speakers for each agenda item' %}</option>
+        </select>
+        <label>{% trans 'Export format' %}:</label>
+        <select id="agendaExportFormat">
+            <option value="csv">CSV</option>
+        </select>
+        <div class="control-group ">
+            <a href="{% url 'export_speakers' %}" class="btn">{% trans 'Export' %}</a>
+        </div>
+    </fieldset>
+
+{% endblock %}
