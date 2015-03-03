@@ -7,7 +7,7 @@ for frame in stack():
     if lines and 'Xe8ot8iaSheenga3Ootha3waes5eisoi7EF2neek' in lines[0]:
         break
 else:
-    from . import main_menu  # noqa
+    from . import main_menu, signals  # noqa
     from .urls import urlpatterns  # noqa
 
 __verbose_name__ = 'OpenSlides Export Plugin'

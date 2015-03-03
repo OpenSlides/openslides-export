@@ -3,7 +3,9 @@
 from cStringIO import StringIO
 import csv
 import os
-from openslides.global_settings import *
+import re
+
+from genshi.core import Markup
 
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
@@ -21,6 +23,7 @@ class ExportListView(TemplateView):
     View of the overview page of all exportable elements
     """
     template_name = 'openslides_export/export_list.html'
+    required_permission = 'openslides_export.can_export'
 
     def get_context_data(self, *args, **kwargs):
         """
@@ -35,6 +38,7 @@ class ExportSpeakersView(PermissionMixin, View):
     """
     View to export the lists of speakers of all agenda items as CSV.
     """
+    required_permission = 'openslides_export.can_export'
 
     def get(self, request, *args, **kwargs):
         response = HttpResponse()
@@ -59,6 +63,7 @@ class ExportMotionView(DetailView):
     """
     View to export a motion or a list of motions as ODT.
     """
+    required_permission = 'openslides_export.can_export'
     filename = None
     odt_template = None
     model = Motion
@@ -85,7 +90,10 @@ class ExportMotionView(DetailView):
         """
         motion = self.get_object()
         if motion:
-            filename = "%s-%s" % (_("Motion"), motion.identifier)
+            if motion.identifier:
+                filename = "%s-%s" % (_("Motion"), motion.identifier)
+            else:
+                filename = "%s" % (_("Motion"))
         else:
             filename = _("Motion-list")
         return filename
@@ -95,17 +103,30 @@ class ExportMotionView(DetailView):
         Return the path to the odt template file.
         """
         if self.get_object():
-            odt_template = os.path.join(SITE_ROOT, '../openslides_export/templates/openslides_export/template-motion.odt')
+            odt_template = os.path.join(os.path.dirname(__file__), 'templates', 'openslides_export', 'template-motion.odt')
         else:
-            odt_template = os.path.join(SITE_ROOT, '../openslides_export/templates/openslides_export/template-motion-list.odt')
+            odt_template = os.path.join(os.path.dirname(__file__), 'templates', 'openslides_export', 'template-motion-list.odt')
         return odt_template
 
+    def format_py3o_context_value(self, value):
+        # remove html tags and replace all linebreaks
+        return Markup(unicode(re.sub('<.*?>', '', value)).replace('\n', '<text:line-break/>'))
+
     def get_variables(self):
+        motion = self.get_object()
+        text = None
+        reason = None
+        if motion:
+            text = self.format_py3o_context_value(motion.text)
+            reason = self.format_py3o_context_value(motion.reason)
+
         return dict({
             'event_name': config['event_name'],
             'event_description': config['event_description'],
             'event_date': config['event_date'],
-            'motion': self.get_object(),
+            'motion': motion,
+            'text': text,
+            'reason': reason,
             'motions': Motion.objects.all(),
         })
 

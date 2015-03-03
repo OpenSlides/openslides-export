@@ -40,15 +40,14 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
-# Translations
-*.mo
-*.pot
-
 # Django stuff:
 *.log
 
 # Sphinx documentation
 docs/_build/
 
-# PyBuilder
-target/
+# Temporary files
+*.swp
+*~
+.~lock.*
+.DS_Store
