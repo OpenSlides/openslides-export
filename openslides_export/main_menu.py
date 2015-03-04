@@ -8,7 +8,7 @@ class ExportPluginMainMenuEntry(MainMenuEntry):
     Main menu entry for OpenSlides Export Plugin.
     """
     verbose_name = 'Export'
-    required_permission = 'motion.can_manage_motion'
+    required_permission = 'openslides_export.can_export'
     default_weight = 100
     pattern_name = 'export_list'
     icon_css_class = 'icon-export'

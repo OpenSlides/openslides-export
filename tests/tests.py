@@ -17,8 +17,8 @@ class CSVExportView(TestCase):
     Tests the export view and its output, the csv file.
     """
     def setUp(self):
-        ct = ContentType.objects.get(app_label='agenda', model='item')
-        perm = Permission.objects.get(content_type=ct, codename='can_manage_agenda')
+        ct = ContentType.objects.get(app_label='openslides_export', model='export')
+        perm = Permission.objects.get(content_type=ct, codename='can_export')
         self.manager = User.objects.create_user(username='AhxahShahGeb7eith8ua', password='Theithooxa9no0ahgae0')
         self.manager.user_permissions.add(perm)
         self.normal_user = User.objects.create_user(username='Theithooxa9no0ahgae0', password='Ohai4aeyo7can1fahzat')
@@ -38,7 +38,7 @@ class CSVExportView(TestCase):
     def test_csv_content(self):
         item1 = Item.objects.create(title='Iangohse5pae7eineeca')
         speaker1 = Speaker.objects.add(self.manager, item1)
-        response = self.client_1.get('/export/speakers')
+        response = self.client_1.get('/export/speakers/')
         self.assertContains(response, 'Iangohse5pae7eineeca,AhxahShahGeb7eith8ua,', status_code=200)
         speaker1.begin_speach()
         response = self.client_1.get('/export/speakers/')
