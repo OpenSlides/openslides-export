@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Export Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-04 12:51+0100\n"
+"POT-Creation-Date: 2015-03-06 14:40+0100\n"
 "PO-Revision-Date: 2015-03-04\n"
 "Last-Translator: Emanuel Schütze\n"
 "Language-Team: German\n"
@@ -19,39 +19,43 @@ msgstr ""
 msgid "Can export data"
 msgstr "Darf Daten exportieren"
 
-#: views.py:94 views.py:96 templates/openslides_export/export_list.html:28
+#: views.py:111 views.py:113 templates/openslides_export/export_list.html:33
 msgid "Motion"
 msgstr "Antrag"
 
-#: views.py:98
+#: views.py:115
 msgid "Motion-list"
 msgstr "Antragsübersicht"
 
 #: templates/openslides_export/export_list.html:7
-#: templates/openslides_export/export_list.html:24
-#: templates/openslides_export/export_list.html:40
-#: templates/openslides_export/export_list.html:56
+#: templates/openslides_export/export_list.html:29
+#: templates/openslides_export/export_list.html:45
+#: templates/openslides_export/export_list.html:61
 msgid "Export"
 msgstr "Export"
 
-#: templates/openslides_export/export_list.html:27
+#: templates/openslides_export/export_list.html:32
 msgid "Motions"
 msgstr "Anträge"
 
-#: templates/openslides_export/export_list.html:30
+#: templates/openslides_export/export_list.html:35
 msgid "All motions"
 msgstr "Alle Anträge"
 
-#: templates/openslides_export/export_list.html:35
-#: templates/openslides_export/export_list.html:51
+#: templates/openslides_export/export_list.html:40
+#: templates/openslides_export/export_list.html:56
 msgid "Export format"
 msgstr "Exportformat"
 
-#: templates/openslides_export/export_list.html:45
-#: templates/openslides_export/export_list.html:46
+#: templates/openslides_export/export_list.html:50
+#: templates/openslides_export/export_list.html:51
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: templates/openslides_export/export_list.html:49
+#: templates/openslides_export/export_list.html:53
+msgid "Full agenda"
+msgstr "Vollständige Tagesordnung"
+
+#: templates/openslides_export/export_list.html:54
 msgid "Lists of speakers for each agenda item"
 msgstr "Rednerlisten für jeden Tagesordnungspunkt"
