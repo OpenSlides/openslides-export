@@ -16,6 +16,11 @@
             var motion_export_url = "/export/motion/" + motion_id + "/" + motion_export_format;
             $('#motionExportButton').attr("href", motion_export_url);
         });
+        $("#agendaSelect").change(function() {
+            var agenda_choice = $('#agendaSelect').val();
+            var agenda_export_url = "/export/agenda/" + agenda_choice;
+            $('#agendaExportButton').attr("href", agenda_export_url);
+        });
     });
   </script>
 {% endblock %}
@@ -45,7 +50,7 @@
         <legend>{% trans 'Agenda' %}</legend>
         <label>{% trans 'Agenda' %}:</label>
         <select id="agendaSelect">
-            {#<option value="agenda" selected>{% trans 'Full agenda' %}</option>#}
+            <option value="full" selected>{% trans 'Full agenda' %}</option>
             <option value="speakers">{% trans 'Lists of speakers for each agenda item' %}</option>
         </select>
         <label>{% trans 'Export format' %}:</label>
@@ -53,7 +58,7 @@
             <option value="csv">CSV</option>
         </select>
         <div class="control-group ">
-            <a href="{% url 'export_speakers' %}" class="btn">{% trans 'Export' %}</a>
+            <a href="{% url 'export_agenda' %}" id="agendaExportButton" class="btn">{% trans 'Export' %}</a>
         </div>
     </fieldset>
 

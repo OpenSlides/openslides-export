@@ -12,7 +12,7 @@ from django.utils.translation import ugettext as _
 
 from py3o.template import Template as TemplatePy3o
 
-from openslides.agenda.models import Speaker
+from openslides.agenda.models import Item, Speaker
 from openslides.config.api import config
 from openslides.motion.models import Motion
 from openslides.utils.views import PermissionMixin, DetailView, TemplateView, View
@@ -34,7 +34,24 @@ class ExportListView(TemplateView):
         return context
 
 
-class ExportSpeakersView(PermissionMixin, View):
+class ExportAgendaView(PermissionMixin, View):
+    """
+    View to export the agenda as CSV.
+    """
+    required_permission = 'openslides_export.can_export'
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse()
+        response['Content-Disposition'] = 'attachment; filename=agenda.csv;'
+        csv_writer = csv.writer(response)
+        csv_writer.writerow(['Title', 'Text', 'Duration'])
+        for item in Item.objects.all():
+            csv_writer.writerow([
+                item, item.text.encode('utf8'), item.duration])
+        return response
+
+
+class ExportAgendaSpeakersView(PermissionMixin, View):
     """
     View to export the lists of speakers of all agenda items as CSV.
     """
