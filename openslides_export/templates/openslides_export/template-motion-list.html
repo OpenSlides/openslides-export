@@ -1,0 +1,44 @@
+{% load i18n %}
+{% load tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        table, th, td {
+            border: 1px solid grey;
+            border-spacing: 0;
+
+        }
+    </style>
+</head>
+<body>
+    <h1>{% trans "Motions" %}</h1>
+
+    <table>
+        <tr>
+            <th>{% trans "#" %}</th>
+            <th>{% trans "Title" %}</th>
+            <th>{% trans "Submitter" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Category" %}</th>
+        </tr>
+        {% for motion in motions %}
+        <tr>
+            <td>{{ motion.identifier|default:'' }}</td>
+            <td>{{ motion.title }}</td>
+            <td>
+                {% for submitter in motion.submitter.all %}
+                    {{ submitter.person }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{ motion.state }}</td>
+            <td>{% if motion.category %}{{ motion.category }}{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><i>{{ motions|length }} {% trans "Motions" %}</i></p>
+</body>
+</html>

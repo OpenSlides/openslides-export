@@ -8,6 +8,8 @@ import re
 from genshi.core import Markup
 
 from django.http import HttpResponse
+from django.template import RequestContext
+from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 
 from py3o.template import Template as TemplatePy3o
@@ -76,7 +78,7 @@ class ExportAgendaSpeakersView(PermissionMixin, View):
         return response
 
 
-class ExportMotionView(DetailView):
+class ExportMotionODTView(DetailView):
     """
     View to export a motion or a list of motions as ODT.
     """
@@ -87,16 +89,10 @@ class ExportMotionView(DetailView):
 
     def get_object(self, *args, **kwargs):
         try:
-            obj = super(ExportMotionView, self).get_object(*args, **kwargs)
+            obj = super(ExportMotionODTView, self).get_object(*args, **kwargs)
         except ValueError:
             obj = None
         return obj
-
-    def get_format(self):
-        """
-        Return the selected export format.
-        """
-        return self.kwargs.get('format', 'odt')
 
     def get(self, request, *args, **kwargs):
         return self.render_to_response()
@@ -160,4 +156,59 @@ class ExportMotionView(DetailView):
         odt_output = buffer.getvalue()
         buffer.close()
         response.write(odt_output)
+        return response
+
+
+class ExportMotionHTMLView(DetailView):
+    """
+    View to export a motion or a list of motions as HTML.
+    """
+    required_permission = 'openslides_export.can_export'
+    filename = None
+    html_template = None
+    model = Motion
+
+    def get_object(self, *args, **kwargs):
+        try:
+            obj = super(ExportMotionHTMLView, self).get_object(*args, **kwargs)
+        except ValueError:
+            obj = None
+        return obj
+
+    def get_filename(self):
+        """
+        Return the filename for the output file (without suffix).
+        """
+        motion = self.get_object()
+        if motion:
+            if motion.identifier:
+                filename = "%s-%s" % (_("Motion"), motion.identifier)
+            else:
+                filename = "%s" % (_("Motion"))
+        else:
+            filename = _("Motion-list")
+        return filename
+
+    def get_html_template(self):
+        """
+        Return the path to the odt template file.
+        """
+        if self.get_object():
+            html_template = get_template('openslides_export/template-motion.html')
+        else:
+            html_template = get_template('openslides_export/template-motion-list.html')
+        return html_template
+
+    def get(self, *args, **kwargs):
+        """
+        Renders the selected motion with the template as HTML
+        """
+        context = RequestContext(
+            self.request,
+            {'motion': self.get_object(),
+             'motions': Motion.objects.all()}
+        )
+        response = HttpResponse(self.get_html_template().render(context), content_type="text/html")
+        filename = u'filename=%s.html;' % self.get_filename()
+        response['Content-Disposition'] = filename.encode('utf-8')
         return response
