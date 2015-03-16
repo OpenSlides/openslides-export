@@ -15,6 +15,9 @@ urlpatterns = patterns(
     url(r'^export/agenda/speakers/$',
         views.ExportAgendaSpeakersView.as_view(),
         name='export_agenda_speakers'),
-    url(r'^export/motion/(?P<pk>\w+)/(?P<format>\w+)$',
-        views.ExportMotionView.as_view(),
-        name='export_motion'))
+    url(r'^export/motion/(?P<pk>\w+)/odt$',
+        views.ExportMotionODTView.as_view(),
+        name='export_motion_odt'),
+    url(r'^export/motion/(?P<pk>\w+)/html$',
+        views.ExportMotionHTMLView.as_view(),
+        name='export_motion_html'))

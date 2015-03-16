@@ -16,6 +16,12 @@
             var motion_export_url = "/export/motion/" + motion_id + "/" + motion_export_format;
             $('#motionExportButton').attr("href", motion_export_url);
         });
+        $("#motionExportFormat").change(function() {
+            var motion_id = $('#motionSelect').val();
+            var motion_export_format = $('#motionExportFormat').val();
+            var motion_export_url = "/export/motion/" + motion_id + "/" + motion_export_format;
+            $('#motionExportButton').attr("href", motion_export_url);
+        });
         $("#agendaSelect").change(function() {
             var agenda_choice = $('#agendaSelect').val();
             var agenda_export_url = "/export/agenda/" + agenda_choice;
@@ -39,10 +45,11 @@
         </select>
         <label>{% trans 'Export format' %}:</label>
         <select id="motionExportFormat">
+            <option value="html" selected>HTML</option>
             <option value="odt">ODT</option>
         </select>
         <div class="control-group ">
-          <a href="{% url 'export_motion' 'all' 'odt' %}" id="motionExportButton" class="btn">{% trans 'Export' %}</a>
+          <a href="{% url 'export_motion_html' 'all' %}" id="motionExportButton" class="btn">{% trans 'Export' %}</a>
         </div>
     </fieldset>
 
