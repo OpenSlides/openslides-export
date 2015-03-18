@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
     author='Authors of %s, see AUTHORS' % module.__verbose_name__,
     author_email='support@openslides.org',
-    url='http://openslides.org/',
+    url='https://github.com/OpenSlides/openslides-export',
     keywords='OpenSlides',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
