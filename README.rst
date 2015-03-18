@@ -56,6 +56,7 @@ Changelog
 =========
 
 
-Version 1.0 (unreleased)
+Version 1.0 (2015-03-18)
 ------------------------
-* First release of this plugin.
+* First release of this plugin to export agenda data to CSV
+  and motion(s) to ODT and HTML.
